@@ -17,4 +17,4 @@ jobs:
       - name: Compile and run tests
         run: |
           javac -d . src/Clacul/*.java src/Main/*.java test/Test/*.java
-          java -cp .:junit.jar:hamcrest-core.jar org.junit.runner.JUnitCore Test.CalculatriceTest
+          java -cp .:junit.jar:hamcrest-core.jar org.junit.runner.JUnitCore Calcul.CalculatriceTest
