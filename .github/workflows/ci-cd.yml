@@ -1,42 +1,23 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build and Test
-    runs-on: ubuntu-latest
-
+    runs-on: windows-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Build application
-        run: |
-          # Compile Java files
-          javac -d . Calcul/*.java Clacul/*.java
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # You can change the version to match your Java version
 
-      - name: Install dependencies
-        run: |
-          # Assuming there are no external dependencies to install
+      - name: Build project
+        run: javac -cp .:junit-platform-console-standalone.jar *.java
 
-      - name: Run automated tests
-        run: |
-          # Run JUnit tests
-          java -cp .:junit-platform-console-standalone.jar org.junit.platform.console.ConsoleLauncher --class-path . --scan-class-path
-
-  deployment:
-    name: Deployment
-    runs-on: ubuntu-latest
-    needs: [build] # This job depends on the 'build' job
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Deploy to production
-        run: |
-          # Commands to deploy your application to a production environment
+      - name: Run tests
+        run: java -jar junit-platform-console-standalone.jar --class-path . --scan-class-path
