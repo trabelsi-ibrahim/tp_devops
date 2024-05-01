@@ -14,10 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Build your Java files
-      - name: Compile Java files
-        run: javac -d . Test/*.java src/*.java
-
-      # Run your tests
-      - name: Run tests
-        run: java -cp .:junit.jar:hamcrest-core.jar org.junit.runner.JUnitCore Test.CalculatriceTest
+      - name: Compile and run tests
+        run: |
+          javac -d . src/Clacul/*.java src/Main/*.java test/Test/*.java
+          java -cp .:junit.jar:hamcrest-core.jar org.junit.runner.JUnitCore Test.CalculatriceTest
