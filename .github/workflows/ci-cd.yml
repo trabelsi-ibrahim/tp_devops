@@ -6,25 +6,18 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build and Test
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-          architecture: 'x64'
-          server-id: 'github'
-          server-username: ${{ github.actor }}
-          server-password: ${{ secrets.GITHUB_TOKEN }}
-          overwrite-settings: true
+      # Build your Java files
+      - name: Compile Java files
+        run: javac -d . Test/*.java src/*.java
 
-
-      - name: Run tests with Gradle
-        run: ./gradlew test
+      # Run your tests
+      - name: Run tests
+        run: java -cp .:junit.jar:hamcrest-core.jar org.junit.runner.JUnitCore Test.CalculatriceTest
